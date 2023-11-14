@@ -1,7 +1,7 @@
 .. _camera-hamamatsu:
 
-Hamamatsu
-----------
+Hamamatsu camera plugin
+-----------------------
 
 .. image:: orca_flash.png
 
@@ -137,3 +137,32 @@ Code can be found in the HamamatsuDCAMSDKHelper.cpp file.
 	dcamex_getimageheight();		// Get the height of the image
 	dcamex_getfeatureinq();			// Get the settings of a feature (ex: exposure time)
 	dcamex_getbitsperchannel();		// Get the number of bits per channel
+
+
+
+.. code-block:: python
+
+   from Lima import Hamamatsu
+   from lima import Core
+
+   cam = Hamamatsu.Camera()
+   hwint = Hamamatsu.Interface(cam)
+   ct = Core.CtControl(hwint)
+   
+   acq = ct.acquisition()
+
+   # now ask for 2 sec. exposure and 10 frames
+   acq.setAcqExpoTime(2)
+   acq.setNbImages(10)
+
+   ct.prepareAcq()
+   ct.startAcq()
+
+   # wait for last image (#9) ready
+   lastimg = ct.getStatus().ImageCounters.LastImageReady
+   while lastimg !=9:
+     time.sleep(1)
+     lastimg = ct.getStatus().ImageCounters.LastImageReady
+
+   # read the first image
+   im0 = ct.ReadImage(0)
