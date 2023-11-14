@@ -11,13 +11,6 @@ stages:
   tags:
     - conda
 
-build-linux:
-  <<: *build-conda
-  script:
-    - conda mambabuild ./conda/camera --prefix-length=80 --output-folder=dist/ --channel=http://bcu-ci.esrf.fr/stable
-  tags:
-    - linux
-
 build-win:
   <<: *build-conda
   script:
@@ -31,7 +24,6 @@ build-noarch:
   script:
     - conda mambabuild ./conda/tango --prefix-length=80 --output-folder=dist/ --channel=http://bcu-ci.esrf.fr/stable
   dependencies:
-    - build-linux
     - build-win
   tags:
     - linux
@@ -42,7 +34,6 @@ deploy-devel:
     name: devel/$CI_COMMIT_REF_NAME
     url: http://bcu-ci.esrf.fr/devel
   dependencies:
-    - build-linux
     - build-win
     - build-noarch
   script:
@@ -63,7 +54,6 @@ deploy-stable:
     name: production
     url: http://bcu-ci.esrf.fr/stable
   dependencies:
-    - build-linux
     - build-win
     - build-noarch
   script:

@@ -73,7 +73,17 @@ if (CAMERA_MASTER_PROJECT)
   endif()
 endif()
 
-find_package(DCAMAPI REQUIRED)
+#find_package(DCAMAPI REQUIRED)
+#LIBRARIES
+find_library(HAMAMATSU_DCAMAPI_LIB dcamapi "sdk/msvc/x64/bin")
+if("${HAMAMATSU_DCAMAPI_LIB}" STREQUAL "HAMAMATSU_DCAMAPI_LIB-NOTFOUND")
+  message(FATAL_ERROR "${NAME} : dcamapi.lib not found, you can search it in cmake-gui or try to install it if it isn't here.")
+endif()
+find_library(HAMAMATSU_DCIMGAPI_LIB dcimgapi "sdk/msvc/x64/bin")
+if("${HAMAMATSU_DCIMGAPI_LIB}" STREQUAL "HAMAMATSU_DCIMGAPI_LIB-NOTFOUND")
+  message(FATAL_ERROR "${NAME} : dcimgapi.lib not found, you can search it in cmake-gui or try to install it if it isn't here.")
+endif()
+	
 
 file(GLOB_RECURSE HAMAMATSU_INCS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
@@ -85,6 +95,7 @@ add_library(hamamatsu SHARED
   src/HamamatsuSyncCtrlObj.cpp
   src/HamamatsuBinCtrlObj.cpp
   src/HamamatsuRoiCtrlObj.cpp
+  src/HamamatsuDCAMSDKHelper.cpp
   ${HAMAMATSU_INCS}
 )
 
@@ -106,11 +117,16 @@ target_include_directories(hamamatsu
 
 target_link_libraries(hamamatsu PUBLIC limacore)
 
-target_compile_definitions(hamamatsu PUBLIC ${DCAMSDK_DEFINITIONS})
+target_link_libraries(hamamatsu PUBLIC ${HAMAMATSU_DCAMAPI_LIB})
+target_link_libraries(hamamatsu PUBLIC ${HAMAMATSU_DCIMGAPI_LIB})
+target_include_directories(hamamatsu PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sdk/msvc/x64/include>")
+#target_include_directories(hamamatsu PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sdk/msvc/x64/include/legacy>")
 
-target_include_directories(hamamatsu PUBLIC ${DCAMSDK_INCLUDE_DIRS})
+#target_compile_definitions(hamamatsu PUBLIC ${DCAMSDK_DEFINITIONS})
 
-target_link_libraries(hamamatsu PUBLIC ${DCAMSDK_LIBRARIES})
+#target_include_directories(hamamatsu PUBLIC ${DCAMSDK_INCLUDE_DIRS})
+
+#target_link_libraries(hamamatsu PUBLIC ${DCAMSDK_LIBRARIES})
 
 if(WIN32)
   target_compile_definitions(hamamatsu

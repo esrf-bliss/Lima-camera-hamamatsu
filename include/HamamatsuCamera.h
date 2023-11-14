@@ -32,8 +32,8 @@
 #include <sys/timeb.h>
 #include <time.h>
 #include <windows.h>
-#include <dcamapi4.h>
-#include <dcamprop.h>
+#include "dcamapi4.h"
+#include "dcamprop.h"
 
 #include <stdlib.h>
 #include <limits>
@@ -364,6 +364,7 @@ namespace lima
 
 			Camera*   m_cam        ;
             HDCAMWAIT m_wait_handle;
+
 
 		};
 		friend class CameraThread;
