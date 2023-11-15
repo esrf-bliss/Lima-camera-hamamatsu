@@ -576,9 +576,10 @@ namespace lima
 
         bool                        m_hdr_enabled        ; // high dynamic range activation latest value
 
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
         // Constants
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
+	public:
         static const double g_orca_pixel_size              ;
         static const int    g_dcam_str_msg_size            ;
         static const int    g_get_sub_array_do_not_use_view;
