@@ -237,39 +237,6 @@ class HamamatsuClass(PyTango.DeviceClass):
         'config_path':
         [PyTango.DevString,
          'configuration path directory', []],
-        'serial_number':
-        [PyTango.DevLong,
-         'Camera serial number', []],
-        'p_gain':
-        [PyTango.DevString,
-         'Preamplifier gain', []],
-        'vs_speed':
-        [PyTango.DevString,
-         'Vertical shift speed', []],
-        'adc_speed':
-        [PyTango.DevString,
-         'ADC/HSspeed pairs', []],
-        'temperature_sp':
-        [PyTango.DevShort,
-         'Temperature set point in Celsius', []],
-        'cooler':
-        [PyTango.DevString,
-         'Start or stop the cooler ("ON"/"OFF")', []],
-        'fast_ext_trigger':
-        [PyTango.DevString,
-         'Trigger fast mode ("ON"/"OFF")', []],
-        'shutter_level':
-        [PyTango.DevString,
-         'level of the shutter output ("LOW"/"HIGH")', []],                 
-        'fan_mode':
-        [PyTango.DevString,
-         'Fan mode ("FAN_ON_FULL"/"ON_LOW"/"FAN_OFF")',[]],
-        'high_capacity': 
-        [PyTango.DevString,
-         'High Capacity ("HIGH_CAPACITY"/"HIGH_SENSITIVITY")',[]],
-        'baseline_clamp': 
-        [PyTango.DevString,
-         'baseline clamp  ("ON"/"OFF")',[]],
         }
 
 

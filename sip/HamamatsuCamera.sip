@@ -85,14 +85,12 @@ public:
 	void reset();
 
 	// Hamamatsu specific
-	long HamamatsuError(std::string& strErr);
 	void initialiseController();
-	void setFastExtTrigger(bool flag);
-	void getFastExtTrigger(bool& flag);
-	void getReadoutSpeed(short int& readoutSpeed /Out/);
-	void setReadoutSpeed(const short int readoutSpeed);
-	void getLostFrames(unsigned long int& lostFrames /Out/);
-	void getFPS(double& fps);
+	short getReadoutSpeed();
+	void setReadoutSpeed(const short readoutSpeed);
+	void getLostFrames(unsigned long& lostFrames /Out/);
+	void getFPS(double& fps /Out/);
+	double getSensorTemperature();
 private:
         Camera(const Hamamatsu::Camera&);
 };

@@ -33,7 +33,7 @@ test:
   requires:
     - cmake
   imports:
-    - Lima.Andor
+    - Lima.Hamamatsu
   commands:
     - cmake --version
     - ctest --version

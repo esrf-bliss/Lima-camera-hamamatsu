@@ -75,11 +75,11 @@ endif()
 
 #find_package(DCAMAPI REQUIRED)
 #LIBRARIES
-find_library(HAMAMATSU_DCAMAPI_LIB dcamapi "sdk/msvc/x64/bin")
+find_library(HAMAMATSU_DCAMAPI_LIB dcamapi "sdk/msvc/x64/lib")
 if("${HAMAMATSU_DCAMAPI_LIB}" STREQUAL "HAMAMATSU_DCAMAPI_LIB-NOTFOUND")
   message(FATAL_ERROR "${NAME} : dcamapi.lib not found, you can search it in cmake-gui or try to install it if it isn't here.")
 endif()
-find_library(HAMAMATSU_DCIMGAPI_LIB dcimgapi "sdk/msvc/x64/bin")
+find_library(HAMAMATSU_DCIMGAPI_LIB dcimgapi "sdk/msvc/x64/lib")
 if("${HAMAMATSU_DCIMGAPI_LIB}" STREQUAL "HAMAMATSU_DCIMGAPI_LIB-NOTFOUND")
   message(FATAL_ERROR "${NAME} : dcimgapi.lib not found, you can search it in cmake-gui or try to install it if it isn't here.")
 endif()
@@ -131,6 +131,7 @@ target_include_directories(hamamatsu PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_S
 if(WIN32)
   target_compile_definitions(hamamatsu
     PRIVATE hamamatsu_EXPORTS
+    PRIVATE LIBHAMAMATSU_EXPORTS
     PUBLIC NOMINMAX)
   set_target_properties(hamamatsu PROPERTIES PREFIX "lib" IMPORT_PREFIX "lib")
 endif()
