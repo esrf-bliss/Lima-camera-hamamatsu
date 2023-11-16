@@ -26,7 +26,7 @@ build-noarch:
   dependencies:
     - build-win
   tags:
-    - linux
+    - win
     
 deploy-devel:
   stage: deploy
@@ -41,7 +41,7 @@ deploy-devel:
     - conda index /conda-devel/
   tags:
     - conda
-    - linux
+    - win
   only:
     - branches
   except:
@@ -61,6 +61,6 @@ deploy-stable:
     - conda index /conda/
   tags:
     - conda
-    - linux
+    - win
   only:
     - tags

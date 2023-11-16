@@ -71,57 +71,7 @@ class Hamamatsu(PyTango.Device_4Impl):
     @Core.DEB_MEMBER_FUNCT
     def __init__(self,cl, name):
         PyTango.Device_4Impl.__init__(self,cl,name)
-
-        # dictionnaries to be used with AttrHelper.get_attr_4u
-        self.__FastExtTrigger = {'ON':True,
-                           'OFF':False}
-        self.__Cooler = {'ON': True,
-                             'OFF': False}
-        self.__ShutterLevel = {'LOW':0,
-                                   'HIGH':1}       
-
-        if _HamamatsuInterface.getFanMode() == HamamatsuAcq.FAN_UNSUPPORTED:
-            self.__FanMode = {'UNSUPPORTED': HamamatsuAcq.FAN_UNSUPPORTED}
-        else:
-            self.__FanMode = {'FULL': HamamatsuAcq.FAN_ON_FULL,
-                              'LOW': HamamatsuAcq.FAN_ON_LOW,
-                              'OFF': HamamatsuAcq.FAN_OFF,
-                              }
-
-        if _HamamatsuInterface.getHighCapacity() == HamamatsuAcq.HC_UNSUPPORTED:
-            self.__HighCapacity = {'UNSUPPORTED': HamamatsuAcq.HC_UNSUPPORTED}
-        else:
-            self.__HighCapacity = {'HIGH_CAPACITY': HamamatsuAcq.HIGH_CAPACITY,
-                                   'HIGH_SENSITIVITY': HamamatsuAcq.HIGH_SENSITIVITY,
-                                   }
-
-        if _HamamatsuInterface.getBaselineClamp() == HamamatsuAcq.BLCLAMP_UNSUPPORTED:
-            self.__BaselineClamp = {'UNSUPPORTED': HamamatsuAcq.BLCLAMP_UNSUPPORTED}
-        else:
-            self.__BaselineClamp = {'ON': HamamatsuAcq.BLCLAMP_ENABLED,
-                                    'OFF': HamamatsuAcq.BLCLAMP_DISABLED}
-
-        #Only needed to map attribute and function which does not fit the with naming convention.
-        self.__Attribute2FunctionBase = {
-            'temperature_sp': 'TemperatureSP',
-            #'my_attr1': 'AnOtherFunctionName',
-                                       }
-
-        # prepare lists of supported PGain/VerticalShiftSpeed/AdcSpeed
-        self.__PGain = {}
-        max_ind = _HamamatsuInterface.getPGainMaxIndex()
-        for ind in range(max_ind):
-            self.__PGain[_HamamatsuInterface.getPGainString(ind)] = ind
-        
-        self.__VsSpeed = {}
-        max_ind = _HamamatsuInterface.getVsSpeedMaxIndex()
-        for ind in range(max_ind):
-            self.__VsSpeed[_HamamatsuInterface.getVsSpeedString(ind)] = ind
-
-        self.__AdcSpeed = {}
-        max_ind = _HamamatsuInterface.getAdcSpeedMaxIndex()
-        for ind in range(max_ind):
-            self.__AdcSpeed[_HamamatsuInterface.getAdcSpeedPaireString(ind)] = ind
+     
         self.init_device()
                                                
 #------------------------------------------------------------------
@@ -142,44 +92,7 @@ class Hamamatsu(PyTango.Device_4Impl):
         self.get_device_properties(self.get_device_class())
 
         
-       # Apply properties if any
-        if self.p_gain:
-            _HamamatsuInterface.setPGain(self.__PGain[self.p_gain])
-            
-        if self.vs_speed:
-            _HamamatsuInterface.setVsSpeed(self.__VsSpeed[self.vs_speed])
-            
-        if self.adc_speed:
-            _HamamatsuInterface.setAdcSpeed(self.__AdcSpeed[self.adc_speed])
-
-        if self.temperature_sp:            
-            _HamamatsuInterface.setTemperatureSP(self.temperature_sp)
-            
-        if self.cooler:
-            _HamamatsuInterface.setCooler(self.__Cooler[self.cooler])
-            
-        if self.fast_ext_trigger:
-            _HamamatsuInterface.setFastExtTrigger(self.__FastExtTrigger[self.fast_ext_trigger])
-            
-        if self.shutter_level:
-            _HamamatsuInterface.setShutterLevel(self.__ShutterLevel[self.shutter_level])
-
-
-        if 'UNSUPPORTED' in self.__FanMode.keys() and self.fan_mode:
-            deb.Error('Cannot set fan_mode property, not supported for this camera model')
-        elif self.fan_mode:
-                _HamamatsuInterface.setFanMode(self.__FanMode[self.fan_mode])
-
-        if 'UNSUPPORTED' in self.__HighCapacity.keys() and self.high_capacity:
-            deb.Error('Cannot set high_capacity property, not supported for this camera model')
-        elif self.high_capacity:
-                _HamamatsuInterface.setHighCapacity(self.__HighCapacity[self.high_capacity])
-
-        if 'UNSUPPORTED' in self.__BaselineClamp.keys() and self.baseline_clamp:
-            deb.Error('Cannot set baseline_clamp propery, not supported for this camera model')
-        elif self.baseline_clamp:
-            _HamamatsuInterface.setBaselineClamp(self.__BaselineClamp[self.baseline_clamp])
-
+       
  
         
 
@@ -238,7 +151,10 @@ class HamamatsuClass(PyTango.DeviceClass):
         [PyTango.DevString,
          'configuration path directory', []],
         }
-
+        'camera_number':
+        [PyTango.DevShort,
+         'camera number', []],
+        }
 
     #    Command definitions
     cmd_list = {
@@ -250,33 +166,6 @@ class HamamatsuClass(PyTango.DeviceClass):
 
     #    Attribute definitions
     attr_list = {
-        'fast_ext_trigger':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'Fast trigger mode, see manual for usage, OFF or ON',
-             }],
-        'shutter_level':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'Shutter output level, see manual for usage LOW or HIGH',
-             }],
-       'temperature_sp':
-        [[PyTango.DevShort,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'C',
-             'format': '%1d',
-             'description': 'in Celsius',
-             }],
         'temperature':
         [[PyTango.DevShort,
           PyTango.SCALAR,
@@ -286,89 +175,6 @@ class HamamatsuClass(PyTango.DeviceClass):
              'format': '%1d',
              'description': 'in Celsius',
              }],
-        'cooler':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'Start/stop the cooler, OFF or ON',
-             }],
-        'cooling_status':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ],
-         {
-             'label':'Cooling status',
-             'unit': 'N/A',
-             'format': '%1d',
-             'description': 'return status of the cooling system, tell if the setpoint is reached',
-             }],
-        'timing':
-        [[PyTango.DevFloat,
-          PyTango.SPECTRUM,
-          PyTango.READ,2],
-        {
-             'unit': 'second',
-             'format': '%f',
-             'description': '[0]: exposure, [1]: latency',
-             }],
-        'p_gain':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '%s',
-             'description': 'Premplifier Gain which can be apply to the readout, from X1-XN, check the camera documentation for the valid range',
-             }],
-        'vs_speed':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'Vertical shift speed,  in us/pixel, check the camera documentation for the valid range',
-             }],
-        'adc_speed':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'ADC and Horizontal shift speed, in ADCchannel/Freq.Mhz, check the documentatio for more help',
-             }],
-        'high_capacity':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'HIGH_CAPACITY or HIGH_SENSITIVITY',
-             }],
-        'fan_mode':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'FAN_OFF or FAN_ON_FULL, or FAN_ON_LOW',
-             }],
-        'baseline_clamp':
-        [[PyTango.DevString,
-          PyTango.SCALAR,
-          PyTango.READ_WRITE],
-         {
-             'unit': 'N/A',
-             'format': '',
-             'description': 'ON or OFF',
-             }],
-
         }
 
 #------------------------------------------------------------------
