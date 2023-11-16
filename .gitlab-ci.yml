@@ -26,7 +26,7 @@ build-noarch:
   dependencies:
     - build-win
   tags:
-    - linux
+    - win
     
 deploy-devel:
   stage: deploy
