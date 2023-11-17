@@ -98,7 +98,7 @@ public:
         void setHighDynamicRangeEnabled(const bool& in_enabled);
 
         std::string getReadoutSpeedLabel();
-        void setReadoutSpeedLabel(const std::string& in_readout_speed_label /Out/);
+        void setReadoutSpeedLabel(const std::string& in_readout_speed_label);
 
         bool isSensorTemperatureSupported();
         bool isTemperatureStatusSupported();
