@@ -91,21 +91,21 @@ public:
 	void getFPS(double& fps /Out/);
 	double getSensorTemperature();
 
-        std::string getCoolerModeLabel        (void);
-        std::string getTemperatureStatusLabel (void);
-        std::string getCoolerStatusLabel      (void);
-        bool getHighDynamicRangeEnabled(void);
+        std::string getCoolerModeLabel();
+        std::string getTemperatureStatusLabel();
+        std::string getCoolerStatusLabel();
+        bool getHighDynamicRangeEnabled();
         void setHighDynamicRangeEnabled(const bool& in_enabled /Out/);
 
-        std::string getReadoutSpeedLabel(void);
+        std::string getReadoutSpeedLabel();
         void setReadoutSpeedLabel(const std::string& in_readout_speed_label /Out/);
 
-        bool isSensorTemperatureSupported(void);
-        bool isTemperatureStatusSupported(void);
-        bool isCoolerModeSupported       (void);
-        bool isCoolerStatusSupported     (void);
-        bool isHighDynamicRangeSupported (void);
-        bool isReadoutSpeedSupported     (void);
+        bool isSensorTemperatureSupported();
+        bool isTemperatureStatusSupported();
+        bool isCoolerModeSupported();
+        bool isCoolerStatusSupported();
+        bool isHighDynamicRangeSupported();
+        bool isReadoutSpeedSupported();
         std::string getAllParameters();
     
 private:
