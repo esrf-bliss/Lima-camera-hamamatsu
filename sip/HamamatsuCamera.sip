@@ -85,12 +85,29 @@ public:
 	void reset();
 
 	// Hamamatsu specific
-	void initialiseController();
 	short getReadoutSpeed();
 	void setReadoutSpeed(const short readoutSpeed);
 	void getLostFrames(unsigned long& lostFrames /Out/);
 	void getFPS(double& fps /Out/);
 	double getSensorTemperature();
+
+        std::string getCoolerModeLabel        (void);
+        std::string getTemperatureStatusLabel (void);
+        std::string getCoolerStatusLabel      (void);
+        bool getHighDynamicRangeEnabled(void);
+        void setHighDynamicRangeEnabled(const bool& in_enabled /Out/);
+
+        std::string getReadoutSpeedLabel(void);
+        void setReadoutSpeedLabel(const std::string& in_readout_speed_label /Out/);
+
+        bool isSensorTemperatureSupported(void);
+        bool isTemperatureStatusSupported(void);
+        bool isCoolerModeSupported       (void);
+        bool isCoolerStatusSupported     (void);
+        bool isHighDynamicRangeSupported (void);
+        bool isReadoutSpeedSupported     (void);
+        std::string getAllParameters();
+    
 private:
         Camera(const Hamamatsu::Camera&);
 };

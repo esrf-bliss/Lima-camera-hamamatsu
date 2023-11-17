@@ -71,7 +71,15 @@ class Hamamatsu(PyTango.Device_4Impl):
     @Core.DEB_MEMBER_FUNCT
     def __init__(self,cl, name):
         PyTango.Device_4Impl.__init__(self,cl,name)
-     
+        # dictionnaries to be used with AttrHelper.get_attr_4u
+        self.__ReadoutSpeed = {'SLOW':1,
+                               'NORMAL':2}
+
+         #Only needed to map attribute and function which does not fit the with naming convention.
+        self.__Attribute2FunctionBase = {
+            'frame_rate': 'FPS',
+        }
+
         self.init_device()
                                                
 #------------------------------------------------------------------
@@ -91,9 +99,8 @@ class Hamamatsu(PyTango.Device_4Impl):
         # Load the properties
         self.get_device_properties(self.get_device_class())
 
-        
-       
- 
+        if self.readout_speed:
+            _HamamatsuCamera.setReadoutSpeed(self.__ReadoutSpeed[self.readout_speed.upper()])
         
 
 #==================================================================
@@ -104,18 +111,8 @@ class Hamamatsu(PyTango.Device_4Impl):
 
 
     def __getattr__(self,name) :
-        return AttrHelper.get_attr_4u(self, name, _HamamatsuInterface)
+        return AttrHelper.get_attr_4u(self, name, _HamamatsuCamera)
 
-
-    ## @brief return the timing times, exposure and latency
-    #  
-    def read_timing(self, attr):
-        timing=[]
-        timing.append(_HamamatsuCamera.getExpTime())
-        timing.append(_HamamatsuCamera.getLatTime())
-        
-        attr.set_value(timing,2)        
-        
 
 #==================================================================
 #
@@ -147,14 +144,17 @@ class HamamatsuClass(PyTango.DeviceClass):
 
     #    Device Properties
     device_property_list = {
-        'config_path':
-        [PyTango.DevString,
-         'configuration path directory', []],
-        }
         'camera_number':
         [PyTango.DevShort,
          'camera number', []],
+        'readout_speed':
+        [PyTango.DevString,
+         'The readout speed, normal/slow', []],
+        'frame_buffer_size':
+        [PyTango.DevLong,
+         'This is the DCAM frame buffer size used during the acquisition.', []],
         }
+        
 
     #    Command definitions
     cmd_list = {
@@ -166,15 +166,39 @@ class HamamatsuClass(PyTango.DeviceClass):
 
     #    Attribute definitions
     attr_list = {
-        'temperature':
-        [[PyTango.DevShort,
+        'sensor_temperature':
+        [[PyTango.DevDouble,
           PyTango.SCALAR,
           PyTango.READ],
          {
              'unit': 'C',
-             'format': '%1d',
-             'description': 'in Celsius',
+             'format': '%f',
+             'description': 'Sensor temperature',
              }],
+       'readout_speed':
+        [[PyTango.DevString,
+          PyTango.SCALAR,
+          PyTango.READ_WRITE],
+         {
+             'format': '%d',
+             'description': 'readout',
+             }],        
+       'lost_frames':
+        [[PyTango.DevLong,
+          PyTango.SCALAR,
+          PyTango.READ],
+         {
+             'format': '%d',
+             'description': 'Number of frames lost during the current or last acquisition',
+             }],        
+       'frame_rate':
+        [[PyTango.DevDouble,
+          PyTango.SCALAR,
+          PyTango.READ],
+         {
+             'format': '%f',
+             'description': 'The last computed frame per second (the value is computed every 100 frames only)',
+             }],        
         }
 
 #------------------------------------------------------------------
@@ -193,13 +217,13 @@ from Lima  import Hamamatsu as HamamatsuAcq
 _HamamatsuCamera = None
 _HamamatsuInterface = None
 
-def get_control(config_path='/usr/local/etc/andor', serial_number=0, **keys) :
+def get_control(camera_number=0, frame_buffer_size=10, **keys) :
     #properties are passed here as string
     global _HamamatsuCamera
     global _HamamatsuInterface
     if _HamamatsuCamera is None:
         print ('\n\nStarting and configuring the Hamamatsu camera ...')
-        _HamamatsuCamera = HamamatsuAcq.Camera(config_path, int(serial_number))
+        _HamamatsuCamera = HamamatsuAcq.Camera("useless config_path!!", int(camera_number, int(frame_buffer_size))
         _HamamatsuInterface = HamamatsuAcq.Interface(_HamamatsuCamera)
         print ('\n\nHamamatsu Camera %s: %s is started'%(_HamamatsuCamera.getDetectorType(),_HamamatsuCamera.getDetectorModel()))
     return Core.CtControl(_HamamatsuInterface)
