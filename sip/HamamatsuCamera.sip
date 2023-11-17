@@ -1,10 +1,12 @@
 //###########################################################################
 // This file is part of LImA, a Library for Image Acquisition
 //
-// Copyright (C) : 2009-2017
+// Copyright (C) : 2009-2023
 // European Synchrotron Radiation Facility
-// BP 220, Grenoble 38043
+// CS40220 38043 Grenoble Cedex 9
 // FRANCE
+//
+// Contact: lima@esrf.fr
 //
 // This is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,7 +36,7 @@ public:
 
 	enum Status { Ready, Exposure, Readout, Latency, Fault };
 
-	Camera(const std::string& config_path,int camera_number=0);
+	Camera(const std::string& config_path,int camera_number=0, int frame_buffer_size=10);
 	~Camera();
 
 	void startAcq();
@@ -91,21 +93,21 @@ public:
 	void getFPS(double& fps /Out/);
 	double getSensorTemperature();
 
-        std::string getCoolerModeLabel        (void);
-        std::string getTemperatureStatusLabel (void);
-        std::string getCoolerStatusLabel      (void);
-        bool getHighDynamicRangeEnabled(void);
-        void setHighDynamicRangeEnabled(const bool& in_enabled /Out/);
+        std::string getCoolerModeLabel();
+        std::string getTemperatureStatusLabel();
+        std::string getCoolerStatusLabel();
+        bool getHighDynamicRangeEnabled();
+        void setHighDynamicRangeEnabled(const bool& in_enabled);
 
-        std::string getReadoutSpeedLabel(void);
-        void setReadoutSpeedLabel(const std::string& in_readout_speed_label /Out/);
+        std::string getReadoutSpeedLabel();
+        void setReadoutSpeedLabel(const std::string& in_readout_speed_label);
 
-        bool isSensorTemperatureSupported(void);
-        bool isTemperatureStatusSupported(void);
-        bool isCoolerModeSupported       (void);
-        bool isCoolerStatusSupported     (void);
-        bool isHighDynamicRangeSupported (void);
-        bool isReadoutSpeedSupported     (void);
+        bool isSensorTemperatureSupported();
+        bool isTemperatureStatusSupported();
+        bool isCoolerModeSupported();
+        bool isCoolerStatusSupported();
+        bool isHighDynamicRangeSupported();
+        bool isReadoutSpeedSupported();
         std::string getAllParameters();
     
 private:

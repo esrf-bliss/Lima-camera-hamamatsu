@@ -152,7 +152,7 @@ class HamamatsuClass(PyTango.DeviceClass):
          'The readout speed, normal/slow', []],
         'frame_buffer_size':
         [PyTango.DevLong,
-         'This is the DCAM frame buffer size used during the acquisition.', []],
+         'The DCAM frame buffer size used during the acquisition', []],
         }
         
 
@@ -223,7 +223,7 @@ def get_control(camera_number=0, frame_buffer_size=10, **keys) :
     global _HamamatsuInterface
     if _HamamatsuCamera is None:
         print ('\n\nStarting and configuring the Hamamatsu camera ...')
-        _HamamatsuCamera = HamamatsuAcq.Camera("useless config_path!!", int(camera_number, int(frame_buffer_size))
+        _HamamatsuCamera = HamamatsuAcq.Camera("useless config_path!!", int(camera_number), int(frame_buffer_size))
         _HamamatsuInterface = HamamatsuAcq.Interface(_HamamatsuCamera)
         print ('\n\nHamamatsu Camera %s: %s is started'%(_HamamatsuCamera.getDetectorType(),_HamamatsuCamera.getDetectorModel()))
     return Core.CtControl(_HamamatsuInterface)
