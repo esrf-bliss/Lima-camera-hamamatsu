@@ -41,7 +41,7 @@ deploy-devel:
     - conda index /conda-devel/
   tags:
     - conda
-    - win
+    - linux
   only:
     - branches
   except:
@@ -61,6 +61,6 @@ deploy-stable:
     - conda index /conda/
   tags:
     - conda
-    - win
+    - linux
   only:
     - tags
