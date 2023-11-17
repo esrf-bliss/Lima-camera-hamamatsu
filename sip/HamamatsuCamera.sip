@@ -95,7 +95,7 @@ public:
         std::string getTemperatureStatusLabel();
         std::string getCoolerStatusLabel();
         bool getHighDynamicRangeEnabled();
-        void setHighDynamicRangeEnabled(const bool& in_enabled /Out/);
+        void setHighDynamicRangeEnabled(const bool& in_enabled);
 
         std::string getReadoutSpeedLabel();
         void setReadoutSpeedLabel(const std::string& in_readout_speed_label /Out/);
