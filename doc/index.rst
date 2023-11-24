@@ -145,7 +145,9 @@ Code can be found in the HamamatsuDCAMSDKHelper.cpp file.
    from Lima import Hamamatsu
    from lima import Core
 
-   cam = Hamamatsu.Camera()
+   # create the camera, required an useless string as config_path, a camera number(optional, default=0)
+   # and a buffer size (optional, default=10)
+   cam = Hamamatsu.Camera("",0,10)
    hwint = Hamamatsu.Interface(cam)
    ct = Core.CtControl(hwint)
    
