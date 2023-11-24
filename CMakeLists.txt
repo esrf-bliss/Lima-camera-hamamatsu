@@ -27,7 +27,6 @@ cmake_minimum_required(VERSION 3.5)
 project(hamamatsu)
 
 
-
 # Include additional modules that are used inconditionnaly
 include(GNUInstallDirs)
 include(GenerateExportHeader)
@@ -67,6 +66,7 @@ include(project_version)
 if (CAMERA_MASTER_PROJECT)
   option(LIMA_ENABLE_PYTHON "compile python binding code?" OFF)
   option(LIMA_ENABLE_PYTANGO_SERVER "install python tango server?" OFF)
+  option(LIMA_ENABLE_TESTS "compile the test programs?" OFF)
 
   if (LIMA_ENABLE_PYTHON)
     limatools_find_python_and_sip()
@@ -185,7 +185,7 @@ if(LIMA_ENABLE_PYTHON)
 endif()
 
 ## Tests
-if(CAMERA_ENABLE_TESTS)
+if(LIMA_ENABLE_TESTS)
     enable_testing()
-    #add_subdirectory(test)
+    add_subdirectory(test)
 endif()
