@@ -1,10 +1,12 @@
 //###########################################################################
 // This file is part of LImA, a Library for Image Acquisition
 //
-// Copyright (C) : 2009-2017
+// Copyright (C) : 2009-2023
 // European Synchrotron Radiation Facility
-// BP 220, Grenoble 38043
+// CS40220 38043 Grenoble Cedex 9
 // FRANCE
+//
+// Contact: lima@esrf.fr
 //
 // This is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,8 +34,8 @@
 #include <sys/timeb.h>
 #include <time.h>
 #include <windows.h>
-#include <dcamapi4.h>
-#include <dcamprop.h>
+#include "dcamapi4.h"
+#include "dcamprop.h"
 
 #include <stdlib.h>
 #include <limits>
@@ -159,11 +161,11 @@ namespace lima
 	    void getDetectorType(std::string& type);
 	    void getDetectorModel(std::string& model);
 	    void getDetectorImageSize(Size& size);
-		void getDetectorMaxImageSize(Size& size);
+	    void getDetectorMaxImageSize(Size& size);
     
 	    // -- Buffer control object
 	    HwBufferCtrlObj* getBufferCtrlObj();
-        HwEventCtrlObj * getEventCtrlObj ();
+            HwEventCtrlObj * getEventCtrlObj ();
     
 	    //-- Synch control object
 	    bool checkTrigMode(TrigMode trig_mode);
@@ -199,12 +201,9 @@ namespace lima
 	    void reset();
 
 	    // -- Hamamatsu specific
-	    long HamamatsuError(string& strErr);
 	    void initialiseController();
-	    void setFastExtTrigger(bool flag);
-	    void getFastExtTrigger(bool& flag);
-		void getLostFrames(unsigned long int& lost_frames);	///< [out] current lost frames
-		void getFPS(double& fps);							///< [out] last computed fps
+	    void getLostFrames(unsigned long int& lost_frames);	///< [out] current lost frames
+	    void getFPS(double& fps);				///< [out] last computed fps
    
         void setSyncReadoutBlankMode(enum SyncReadOut_BlankMode in_sync_read_out_mode); ///< [in] type of sync-readout trigger's blank
 
@@ -215,103 +214,103 @@ namespace lima
                             double exp_time  );    ///< [in] exposure time to set
 
         void getViewExpTime(int      view_index,   ///< [in] view index [0...m_max_views[
-                            double & exp_time  );  ///< [out] current exposure time
+                                double & exp_time  );  ///< [out] current exposure time
 
-        void getMinViewExpTime(double& exp_time); ///< [out] current exposure time
+            void getMinViewExpTime(double& exp_time); ///< [out] current exposure time
 
-        void setViewExpTime1(double exp_time   ); ///< [in] exposure time to set
-        void setViewExpTime2(double exp_time   ); ///< [in] exposure time to set
-        void getViewExpTime1(double & exp_time ); ///< [out] current exposure time
-        void getViewExpTime2(double & exp_time ); ///< [out] current exposure time
+            void setViewExpTime1(double exp_time   ); ///< [in] exposure time to set
+            void setViewExpTime2(double exp_time   ); ///< [in] exposure time to set
+            void getViewExpTime1(double & exp_time ); ///< [out] current exposure time
+            void getViewExpTime2(double & exp_time ); ///< [out] current exposure time
 
-        void setViewMode(bool   flag);
-        void getViewMode(bool & flag);
-        void setViewMode(bool in_view_mode_activated,  ///< [in] view mode activation or not
+            void setViewMode(bool   flag);
+            void getViewMode(bool & flag);
+            void setViewMode(bool in_view_mode_activated,  ///< [in] view mode activation or not
                          int  in_views_number       ); ///< [in] number of views if view mode activated
 
-        //-- Output Triggers  control
-        void setOutputTriggerKind    (int channel,                                                   ///< [in] channel to set
-                                      enum Camera::Output_Trigger_Kind in_output_trig_kind);                 ///< [in] kind of the channel to set
-        void setOutputTriggerPolarity(int in_channel,                                                ///< [in] the channel to set
-                                      enum Camera::Output_Trigger_Polarity in_output_trig_polarity); ///< [in] polarity of the channel to set
-        enum Camera::Output_Trigger_Kind getOutputTriggerKind(int channel); ///< [in] channel to get
-        enum Camera::Output_Trigger_Polarity getOutputTriggerPolarity(int channel); ///< [in] channel to get
+            //-- Output Triggers  control
+            void setOutputTriggerKind    (int channel,                                                   ///< [in] channel to set
+                                          enum Camera::Output_Trigger_Kind in_output_trig_kind);                 ///< [in] kind of the channel to set
+            void setOutputTriggerPolarity(int in_channel,                                                ///< [in] the channel to set
+                                          enum Camera::Output_Trigger_Polarity in_output_trig_polarity); ///< [in] polarity of the channel to set
+            enum Camera::Output_Trigger_Kind getOutputTriggerKind(int channel); ///< [in] channel to get
+            enum Camera::Output_Trigger_Polarity getOutputTriggerPolarity(int channel); ///< [in] channel to get
 
-        void traceAllRoi(void);
-        void checkingROIproperties(void);
+            void traceAllRoi(void);
+            void checkingROIproperties(void);
         
-        double getSensorTemperature(void);
+            double getSensorTemperature(void);
 
-        std::string getCoolerModeLabel        (void);
-        std::string getTemperatureStatusLabel (void);
-        std::string getCoolerStatusLabel      (void);
-        bool        getHighDynamicRangeEnabled(void);
-        void        setHighDynamicRangeEnabled(const bool & in_enabled);
+            std::string getCoolerModeLabel        (void);
+            std::string getTemperatureStatusLabel (void);
+            std::string getCoolerStatusLabel      (void);
+            bool        getHighDynamicRangeEnabled(void);
+            void        setHighDynamicRangeEnabled(const bool & in_enabled);
 
-        std::string getReadoutSpeedLabel(void);
-        void        setReadoutSpeedLabel(const std::string & in_readout_speed_label);
+            std::string getReadoutSpeedLabel(void);
+            void        setReadoutSpeedLabel(const std::string & in_readout_speed_label);
 
-        bool isSensorTemperatureSupported(void);
-        bool isTemperatureStatusSupported(void);
-        bool isCoolerModeSupported       (void);
-        bool isCoolerStatusSupported     (void);
-        bool isHighDynamicRangeSupported (void);
-        bool isReadoutSpeedSupported     (void);
+            bool isSensorTemperatureSupported(void);
+            bool isTemperatureStatusSupported(void);
+            bool isCoolerModeSupported       (void);
+            bool isCoolerStatusSupported     (void);
+            bool isHighDynamicRangeSupported (void);
+            bool isReadoutSpeedSupported     (void);
 
-        /**
-        *\fn  getAllParameters
-        *\brief Get all camera parameters (Hamamatsu properties)
-        **/
-        std::string getAllParameters();
+            /**
+            *\fn  getAllParameters
+            *\brief Get all camera parameters (Hamamatsu properties)
+            **/
+            std::string getAllParameters();
 
-        /**
-        *\fn  getParameter
-        *\brief Get camera parameter (Hamamatsu property)
-        **/
-        std::string getParameter(std::string parameter_name);
+            /**
+            *\fn  getParameter
+            *\brief Get camera parameter (Hamamatsu property)
+            **/
+            std::string getParameter(std::string parameter_name);
 
-        /**
-        *\fn  setParameter
-        *\brief Set camera parameter (Hamamatsu property)
-        **/
-        void setParameter(std::string parameter_name, double value);
+            /**
+            *\fn  setParameter
+            *\brief Set camera parameter (Hamamatsu property)
+            **/
+            void setParameter(std::string parameter_name, double value);
     
-        //-
-        void initParametersMap();
-        void mapIdParameter(int32 parameter_id);
+            //-
+            void initParametersMap();
+            void mapIdParameter(int32 parameter_id);
 
-	private:
-        enum Camera::Cooler_Mode getCoolerMode(void);
-        std::string getCoolerModeLabelFromMode(enum Camera::Cooler_Mode in_cooler_mode);
+	public:
+            enum Camera::Cooler_Mode getCoolerMode(void);
+            std::string getCoolerModeLabelFromMode(enum Camera::Cooler_Mode in_cooler_mode);
 
-        enum Camera::Temperature_Status getTemperatureStatus(void);
-        std::string getTemperatureStatusLabelFromStatus(enum Camera::Temperature_Status in_temperature_status);
+            enum Camera::Temperature_Status getTemperatureStatus(void);
+            std::string getTemperatureStatusLabelFromStatus(enum Camera::Temperature_Status in_temperature_status);
 
-        enum Camera::Cooler_Status getCoolerStatus(void);
-        std::string getCoolerStatusLabelFromStatus(enum Camera::Cooler_Status in_cooler_status);
+            enum Camera::Cooler_Status getCoolerStatus(void);
+            std::string getCoolerStatusLabelFromStatus(enum Camera::Cooler_Status in_cooler_status);
 
-        short int getReadoutSpeed(void) const;
-		void      setReadoutSpeed(const short int readout_speed); ///< [in]  new readout speed
+            short int getReadoutSpeed(void) const;
+	    void      setReadoutSpeed(const short int readout_speed); ///< [in]  new readout speed
 
-        std::string getReadoutSpeedLabelFromValue(const short int in_readout_speed) const;
-        short int   getReadoutSpeedFromLabel     (const std::string & in_readout_speed_label) const;
+            std::string getReadoutSpeedLabelFromValue(const short int in_readout_speed) const;
+            short int   getReadoutSpeedFromLabel     (const std::string & in_readout_speed_label) const;
 
-        /**
-        *\fn  getPropertyData
-        *\brief Get camera properties structure
-        *\param[in] property Property to get from camera
-        *\param[out] array_base Base id of property attribute
-        *\param[out] step_element Step for next element 
-        **/
-        void getPropertyData(int32 property, int32 & array_base, int32 & step_element);
+            /**
+            *\fn  getPropertyData
+            *\brief Get camera properties structure
+            *\param[in] property Property to get from camera
+            *\param[out] array_base Base id of property attribute
+            *\param[out] step_element Step for next element 
+            **/
+            void getPropertyData(int32 property, int32 & array_base, int32 & step_element);
 
         
 
 	//-----------------------------------------------------------------------------
 	private:
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
         // CameraThread class
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
         class CameraThread: public CmdThread
 		{
 			DEB_CLASS_NAMESPC(DebModCamera, "CameraThread", "Hamamatsu");
@@ -364,6 +363,7 @@ namespace lima
 
 			Camera*   m_cam        ;
             HDCAMWAIT m_wait_handle;
+
 
 		};
 		friend class CameraThread;
@@ -575,9 +575,10 @@ namespace lima
 
         bool                        m_hdr_enabled        ; // high dynamic range activation latest value
 
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
         // Constants
-		//-----------------------------------------------------------------------------
+	//-----------------------------------------------------------------------------
+	public:
         static const double g_orca_pixel_size              ;
         static const int    g_dcam_str_msg_size            ;
         static const int    g_get_sub_array_do_not_use_view;
