@@ -14,7 +14,10 @@ It supports USB3 or direct camera link connectivity.
  - USB 3.0    -> 30fps
  - Cameralink -> 100fps
 
-The Lima plugin controls an Orca camera (**ORCA-Flash4.0 V2, C11440-22CU V2**) under Windows. It is based on the Hamamatsu DCAM-API SDK.
+The Lima plugin controls an Orca camera (**ORCA-Flash4.0 V2, C11440-22CU V2**) under Windows. It is based on the Hamamatsu DCAM-API SDK4.
+
+The SDK4 is not provided within this project, please contact your Hamamatsu camera saler or visit https://www.hamamatsu.com/us/en/product/cameras/software/driver-software/dcam-sdk4.html 
+
 
 Prerequisite
 ````````````````````
